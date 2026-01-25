@@ -1,0 +1,107 @@
+# IDE
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# Composer
+/vendor/
+composer.lock
+
+# PHP
+.phpunit.result.cache
+.phpunit.cache
+.php-cs-fixer.cache
+.phpstorm.meta.php
+.php_cs.cache
+
+# Testing
+/coverage/
+/build/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Laravel 4 specific
+bootstrap/compiled.php
+app/storage/
+
+# Laravel 5 & Lumen specific
+public/storage
+public/hot
+
+# Laravel 5 & Lumen specific with changed public path
+public_html/storage
+public_html/hot
+
+storage/*.key
+.env
+.env.backup
+.env.production
+.env.local
+.env.*.local
+
+Homestead.yaml
+Homestead.json
+/.vagrant
+
+# Logs
+*.log
+storage/logs/*.log
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+*.bak
+*.cache
+
+# Build artifacts
+/dist/
+/build/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# IDE - PhpStorm
+.idea/
+*.iml
+
+# IDE - VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IDE - NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# IDE - Eclipse
+.project
+.classpath
+.settings/
+
+# Misc
+cghooks.lock
