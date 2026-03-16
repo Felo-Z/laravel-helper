@@ -154,3 +154,56 @@ if (! function_exists('zas')) {
         file_put_contents($filePath, $jsonData);
     }
 }
+if (!function_exists('now_tz_bj')) {
+    /**
+     * @Desc: 北京时间
+     * @Created By: zhanglongfei
+     * @Created At: 2026/2/12 17:43
+     * @return Carbon
+     */
+    function now_tz_bj(): Carbon
+    {
+        return  Carbon::now()->timezone('Asia/Shanghai');
+    }
+}
+if (!function_exists('format_bytes')) {
+    function format_bytes($bytes): string
+    {
+        $bytes = (int) $bytes;
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $bytes = max($bytes, 0);
+        $pow   = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow   = min($pow, count($units) - 1);
+        $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, 2) . ' ' . $units[$pow];
+    }
+}
+
+if (!function_exists('format_duration')) {
+    function format_duration($ms): string
+    {
+        $ms = (int) $ms;
+        if ($ms <= 0) {
+            return 'N/A';
+        }
+
+        if ($ms < 1000) {
+            return $ms . ' ms';
+        }
+
+        $seconds = $ms / 1000;
+        if ($seconds < 60) {
+            return number_format($seconds, 2) . ' s';
+        }
+
+        $minutes = intdiv($seconds, 60);
+        $remain  = $seconds % 60;
+
+        if ($remain === 0) {
+            return $minutes . ' min';
+        }
+
+        return sprintf('%d min %d s', $minutes, $remain);
+    }
+}
