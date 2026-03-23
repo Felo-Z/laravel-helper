@@ -5,6 +5,15 @@
 ## [Unreleased]
 
 ### 新增
+- 支持 Laravel 13（`^12.0|^13.0`）
+
+### 变更
+- 将 `orchestra/testbench` 从 `^10.0` 升级到 `^11.0`
+
+### 移除
+- 移除 `HelperServiceProvider` 中已废弃的 `$defer` 属性（Laravel 13 不再支持）
+
+### 新增
 - 添加 `clear_logs()` 辅助函数，用于清理日志文件
 - 添加 `clear_cache()` 辅助函数，用于清理 Laravel 缓存和 Redis 缓存
 - 添加 `felo:clear-logs` Artisan 命令，用于清理日志文件

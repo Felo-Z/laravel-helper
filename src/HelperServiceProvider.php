@@ -6,8 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class HelperServiceProvider extends ServiceProvider
 {
-    protected bool $defer = true;
-
     /**
      * Perform post-registration booting of services.
      */
