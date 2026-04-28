@@ -1,6 +1,9 @@
 <?php
 
 use Carbon\Carbon;
+use FeloZ\LaravelHelper\Support\ApiResponse;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * @File Desc:
@@ -94,7 +97,7 @@ function clear_cache()
     $redisConnections = $config['redis_connections'] ?? 'default';
 
     if ($clearLaravelCache) {
-        \Illuminate\Support\Facades\Cache::flush();
+        Cache::flush();
     }
 
     if (is_string($redisConnections)) {
@@ -103,9 +106,19 @@ function clear_cache()
     }
 
     foreach ($redisConnections as $connection) {
-        $redis = \Illuminate\Support\Facades\Redis::connection($connection);
+        $redis = Redis::connection($connection);
 
         $redis->flushDB();
+    }
+}
+
+if (! function_exists('ap')) {
+    /**
+     * 获取 API 响应构造器实例
+     */
+    function ap(): ApiResponse
+    {
+        return app(ApiResponse::class);
     }
 }
 
@@ -169,33 +182,33 @@ if (! function_exists('zas')) {
         file_put_contents($filePath, $jsonData);
     }
 }
-if (!function_exists('now_tz_bj')) {
+if (! function_exists('now_tz_bj')) {
     /**
      * @Desc: 北京时间
+     *
      * @Created By: zhanglongfei
      * @Created At: 2026/2/12 17:43
-     * @return Carbon
      */
     function now_tz_bj(): Carbon
     {
-        return  Carbon::now()->timezone('Asia/Shanghai');
+        return Carbon::now()->timezone('Asia/Shanghai');
     }
 }
-if (!function_exists('format_bytes')) {
+if (! function_exists('format_bytes')) {
     function format_bytes($bytes): string
     {
         $bytes = (int) $bytes;
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
         $bytes = max($bytes, 0);
-        $pow   = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow   = min($pow, count($units) - 1);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
         $bytes /= (1 << (10 * $pow));
 
-        return round($bytes, 2) . ' ' . $units[$pow];
+        return round($bytes, 2).' '.$units[$pow];
     }
 }
 
-if (!function_exists('format_duration')) {
+if (! function_exists('format_duration')) {
     function format_duration($ms): string
     {
         $ms = (int) $ms;
@@ -204,19 +217,19 @@ if (!function_exists('format_duration')) {
         }
 
         if ($ms < 1000) {
-            return $ms . ' ms';
+            return $ms.' ms';
         }
 
         $seconds = $ms / 1000;
         if ($seconds < 60) {
-            return number_format($seconds, 2) . ' s';
+            return number_format($seconds, 2).' s';
         }
 
         $minutes = intdiv($seconds, 60);
-        $remain  = $seconds % 60;
+        $remain = $seconds % 60;
 
         if ($remain === 0) {
-            return $minutes . ' min';
+            return $minutes.' min';
         }
 
         return sprintf('%d min %d s', $minutes, $remain);

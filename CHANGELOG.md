@@ -5,9 +5,22 @@
 ## [Unreleased]
 
 ### 新增
-- 支持 Laravel 13（`^12.0|^13.0`）
+- 新增 API 响应能力：`ap()` helper、`Ap` Facade、统一响应结构与全量 HTTP 快捷方法
+- 新增异常响应链路：`exception_pipes`、`render_using` 自动接管 API/JSON 请求异常
+- 新增项目扩展能力：`ApiResponse` 支持 Macro、自定义业务码与分组常量（`ApiCodes/*`）
+- 新增文档体系：接入示例、前后端约定模板、前端精简版、项目扩展指南、升级说明
+- 新增 `error()` 方法作为 `failed()` 别名
 
 ### 变更
+- `api_response` 新增 `status_code_strategy` 配置，默认 `smart`
+- `smart` 策略下业务码失败默认映射 HTTP 400（避免误判系统异常 500）
+- README 版本要求更新为 `PHP >= 8.4` 与 `Laravel ^13.0`
+
+### 测试
+- 新增 API 响应端到端异常接管 Feature 测试
+- 补充 `error()` 别名与状态码策略相关测试
+
+### 历史变更
 - 将 `orchestra/testbench` 从 `^10.0` 升级到 `^11.0`
 
 ### 移除

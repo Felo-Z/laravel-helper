@@ -4,6 +4,7 @@ namespace Tests\Helpers;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class HelperFunctionsTest extends TestCase
@@ -232,14 +233,14 @@ class HelperFunctionsTest extends TestCase
         $seed = 42;
         for ($i = 0; $i < 95; $i++) {
             // Deterministic LCG pseudo-random
-            $seed = ($seed * 1103515245 + 12345) & 0x7fffffff;
+            $seed = ($seed * 1103515245 + 12345) & 0x7FFFFFFF;
             $extCount = ($seed % 3) + 1;
-            $seed = ($seed * 1103515245 + 12345) & 0x7fffffff;
+            $seed = ($seed * 1103515245 + 12345) & 0x7FFFFFFF;
             $excludeCount = $seed % 3;
 
             $extensions = [];
             for ($e = 0; $e < $extCount; $e++) {
-                $seed = ($seed * 1103515245 + 12345) & 0x7fffffff;
+                $seed = ($seed * 1103515245 + 12345) & 0x7FFFFFFF;
                 $extensions[] = $extPool[$seed % count($extPool)];
             }
             $extensions = array_values(array_unique($extensions));
@@ -258,10 +259,10 @@ class HelperFunctionsTest extends TestCase
             $exclude = [];
 
             // Files to delete: matching ext, not excluded
-            $seed = ($seed * 1103515245 + 12345) & 0x7fffffff;
+            $seed = ($seed * 1103515245 + 12345) & 0x7FFFFFFF;
             $deleteCount = ($seed % 3) + 1;
             for ($d = 0; $d < $deleteCount; $d++) {
-                $seed = ($seed * 1103515245 + 12345) & 0x7fffffff;
+                $seed = ($seed * 1103515245 + 12345) & 0x7FFFFFFF;
                 $prefix = $prefixes[$seed % count($prefixes)];
                 $ext = $extensions[$seed % count($extensions)];
                 $toDelete[] = "{$prefix}-del{$d}-{$i}.{$ext}";
@@ -269,7 +270,7 @@ class HelperFunctionsTest extends TestCase
 
             // Files to keep via exclusion
             for ($x = 0; $x < $excludeCount; $x++) {
-                $seed = ($seed * 1103515245 + 12345) & 0x7fffffff;
+                $seed = ($seed * 1103515245 + 12345) & 0x7FFFFFFF;
                 $prefix = $prefixes[$seed % count($prefixes)];
                 $ext = $extensions[$seed % count($extensions)];
                 $name = "{$prefix}-excl{$x}-{$i}.{$ext}";
@@ -278,7 +279,7 @@ class HelperFunctionsTest extends TestCase
             }
 
             // Files to keep via non-matching extension
-            $seed = ($seed * 1103515245 + 12345) & 0x7fffffff;
+            $seed = ($seed * 1103515245 + 12345) & 0x7FFFFFFF;
             $prefix = $prefixes[$seed % count($prefixes)];
             $toKeep[] = "{$prefix}-keep-{$i}.{$nonMatchExt}";
 
@@ -291,7 +292,7 @@ class HelperFunctionsTest extends TestCase
     /**
      * **Validates: Requirements 4.1**
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('clearLogsConfigProvider')]
+    #[DataProvider('clearLogsConfigProvider')]
     public function test_clear_logs_respects_config_property(
         array $extensions,
         array $exclude,

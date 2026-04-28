@@ -1,5 +1,13 @@
 <?php
 
+use FeloZ\LaravelHelper\Support\ExceptionPipes\AuthenticationExceptionPipe;
+use FeloZ\LaravelHelper\Support\ExceptionPipes\HttpExceptionPipe;
+use FeloZ\LaravelHelper\Support\ExceptionPipes\ValidationExceptionPipe;
+use FeloZ\LaravelHelper\Support\Pipes\ErrorPipe;
+use FeloZ\LaravelHelper\Support\Pipes\MessagePipe;
+use FeloZ\LaravelHelper\Support\Pipes\StatusCodePipe;
+use FeloZ\LaravelHelper\Support\RenderUsings\ShouldReturnJsonRenderUsing;
+
 /**
  * @File Desc:
  * @File Name: felo-z-helper.php
@@ -21,5 +29,24 @@ return [
         'clear_laravel_cache' => env('FELO_HELPER_CLEAR_LARAVEL_CACHE', true),
         // Redis 连接名称，支持多个连接，逗号分隔或数组形式
         'redis_connections' => env('FELO_HELPER_REDIS_CONNECTIONS', 'default'),
+    ],
+    'api_response' => [
+        'enable_render_using' => env('FELO_HELPER_API_ENABLE_RENDER_USING', true),
+        'render_using' => ShouldReturnJsonRenderUsing::class,
+        'render_api_paths' => ['api/*'],
+        // 状态码策略：smart(业务码失败映射400) / legacy(业务码失败映射500)
+        'status_code_strategy' => env('FELO_HELPER_API_STATUS_CODE_STRATEGY', 'smart'),
+        // 生产环境默认隐藏 error 详情
+        'hide_error_when_not_debug' => env('FELO_HELPER_API_HIDE_ERROR', true),
+        'pipes' => [
+            MessagePipe::class,
+            ErrorPipe::class,
+            StatusCodePipe::class,
+        ],
+        'exception_pipes' => [
+            AuthenticationExceptionPipe::class,
+            HttpExceptionPipe::class,
+            ValidationExceptionPipe::class,
+        ],
     ],
 ];
