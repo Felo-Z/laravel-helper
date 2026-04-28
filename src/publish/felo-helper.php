@@ -49,4 +49,48 @@ return [
             ValidationExceptionPipe::class,
         ],
     ],
+    'sql_logger' => [
+        'enabled' => env('FELO_HELPER_SQL_LOGGER_ENABLED', false),
+        'directory' => env('FELO_HELPER_SQL_LOGGER_DIRECTORY', storage_path('logs/sql')),
+        'replace_bindings' => env('FELO_HELPER_SQL_LOGGER_REPLACE_BINDINGS', true),
+        'collapse_whitespace' => env('FELO_HELPER_SQL_LOGGER_COLLAPSE_WHITESPACE', true),
+        'ignore_connections' => env('FELO_HELPER_SQL_LOGGER_IGNORE_CONNECTIONS', ''),
+        'exclude_patterns' => env('FELO_HELPER_SQL_LOGGER_EXCLUDE_PATTERNS', ''),
+        'only_methods' => env('FELO_HELPER_SQL_LOGGER_ONLY_METHODS', ''),
+        'exclude_methods' => env('FELO_HELPER_SQL_LOGGER_EXCLUDE_METHODS', ''),
+        'include_raw_sql' => env('FELO_HELPER_SQL_LOGGER_INCLUDE_RAW_SQL', true),
+        'include_bindings' => env('FELO_HELPER_SQL_LOGGER_INCLUDE_BINDINGS', true),
+        'max_query_length' => (int) env('FELO_HELPER_SQL_LOGGER_MAX_QUERY_LENGTH', 0),
+        'max_binding_length' => (int) env('FELO_HELPER_SQL_LOGGER_MAX_BINDING_LENGTH', 0),
+        'group_by_scope' => env('FELO_HELPER_SQL_LOGGER_GROUP_BY_SCOPE', false),
+        'scope_header_format' => env(
+            'FELO_HELPER_SQL_LOGGER_SCOPE_HEADER_FORMAT',
+            "================ SCOPE START ================\n".
+            "scope: {scope_type}\n".
+            "id: {scope_id}\n".
+            "name: {scope_name}\n".
+            "time: {scope_started_at}\n".
+            "{scope_context}\n"
+        ),
+        'date_format' => env('FELO_HELPER_SQL_LOGGER_DATE_FORMAT', 'Y-m-d H:i:s.u'),
+        'entry_format' => env(
+            'FELO_HELPER_SQL_LOGGER_ENTRY_FORMAT',
+            "[{datetime}] [{channel}] [{origin}] [{connection}] [{duration}]\n{sql}\n{separator}\n"
+        ),
+        'channels' => [
+            'all' => [
+                'enabled' => env('FELO_HELPER_SQL_LOGGER_ALL_ENABLED', true),
+                'pattern' => env('FELO_HELPER_SQL_LOGGER_ALL_PATTERN', '/.+/s'),
+                'file_name' => env('FELO_HELPER_SQL_LOGGER_ALL_FILE_NAME', '{date:Y-m-d}-all.sql'),
+                'append' => env('FELO_HELPER_SQL_LOGGER_ALL_APPEND', true),
+            ],
+            'slow' => [
+                'enabled' => env('FELO_HELPER_SQL_LOGGER_SLOW_ENABLED', true),
+                'threshold_ms' => (float) env('FELO_HELPER_SQL_LOGGER_SLOW_THRESHOLD_MS', 100),
+                'pattern' => env('FELO_HELPER_SQL_LOGGER_SLOW_PATTERN', '/.+/s'),
+                'file_name' => env('FELO_HELPER_SQL_LOGGER_SLOW_FILE_NAME', '{date:Y-m-d}-slow.sql'),
+                'append' => env('FELO_HELPER_SQL_LOGGER_SLOW_APPEND', true),
+            ],
+        ],
+    ],
 ];

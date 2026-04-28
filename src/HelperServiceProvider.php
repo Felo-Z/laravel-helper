@@ -6,7 +6,14 @@ use FeloZ\LaravelHelper\Commands\ClearCacheCommand;
 use FeloZ\LaravelHelper\Commands\ClearLogsCommand;
 use FeloZ\LaravelHelper\Support\ApiResponse;
 use FeloZ\LaravelHelper\Support\Contracts\ApiResponseContract;
+use FeloZ\LaravelHelper\Support\SqlLogger\BindingInterpolator;
+use FeloZ\LaravelHelper\Support\SqlLogger\FileNameResolver;
+use FeloZ\LaravelHelper\Support\SqlLogger\QueryLogger;
+use FeloZ\LaravelHelper\Support\SqlLogger\SqlLogFormatter;
+use FeloZ\LaravelHelper\Support\SqlLogger\SqlLoggerConfig;
+use FeloZ\LaravelHelper\Support\SqlLogger\SqlLogWriter;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\ServiceProvider;
 
 class HelperServiceProvider extends ServiceProvider
@@ -21,6 +28,7 @@ class HelperServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->registerApiResponseRenderUsing();
+        $this->registerSqlLogger();
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -43,6 +51,12 @@ class HelperServiceProvider extends ServiceProvider
 
         $this->app->singleton(ApiResponse::class, static fn (): ApiResponse => new ApiResponse);
         $this->app->singleton(ApiResponseContract::class, static fn ($app): ApiResponse => $app->make(ApiResponse::class));
+        $this->app->singleton(SqlLoggerConfig::class);
+        $this->app->singleton(BindingInterpolator::class);
+        $this->app->singleton(FileNameResolver::class);
+        $this->app->singleton(SqlLogFormatter::class);
+        $this->app->singleton(SqlLogWriter::class);
+        $this->app->singleton(QueryLogger::class);
     }
 
     protected function registerApiResponseRenderUsing(): void
@@ -68,5 +82,18 @@ class HelperServiceProvider extends ServiceProvider
         if (is_callable($renderUsing)) {
             call_user_func([$exceptionHandler, 'renderable'], $renderUsing);
         }
+    }
+
+    protected function registerSqlLogger(): void
+    {
+        /** @var SqlLoggerConfig $config */
+        $config = $this->app->make(SqlLoggerConfig::class);
+        if (! $config->isEnabled()) {
+            return;
+        }
+
+        /** @var DatabaseManager $db */
+        $db = $this->app->make('db');
+        $db->listen($this->app->make(QueryLogger::class)->handle(...));
     }
 }
