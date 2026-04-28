@@ -109,6 +109,21 @@ function clear_cache()
     }
 }
 
+if (! function_exists('pas')) {
+    function pas(...$vars): void
+    {
+        $fileName = Carbon::now('Asia/Shanghai')->format('md-Hi-s-v').'.json';
+        $filePath = storage_path('logs').'/'.$fileName;
+        if (count($vars) == 1) {
+            $vars = is_array($vars[0]) ? $vars[0] : [$vars[0]];
+        }
+        $jsonData = json_encode($vars, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
+        file_put_contents($filePath, $jsonData);
+        dump($vars);
+    }
+}
+
 if (! function_exists('das')) {
     function das(...$vars): void
     {
