@@ -7,6 +7,7 @@
     "helper",
     "cache",
     "logs",
+    "sql",
     "artisan"
   ],
   "homepage": "https://github.com/Felo-Z/laravel-helper",

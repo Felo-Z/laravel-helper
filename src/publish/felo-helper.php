@@ -1,13 +1,5 @@
 <?php
 
-use FeloZ\LaravelHelper\Support\ExceptionPipes\AuthenticationExceptionPipe;
-use FeloZ\LaravelHelper\Support\ExceptionPipes\HttpExceptionPipe;
-use FeloZ\LaravelHelper\Support\ExceptionPipes\ValidationExceptionPipe;
-use FeloZ\LaravelHelper\Support\Pipes\ErrorPipe;
-use FeloZ\LaravelHelper\Support\Pipes\MessagePipe;
-use FeloZ\LaravelHelper\Support\Pipes\StatusCodePipe;
-use FeloZ\LaravelHelper\Support\RenderUsings\ShouldReturnJsonRenderUsing;
-
 /**
  * @File Desc:
  * @File Name: felo-z-helper.php
@@ -29,25 +21,6 @@ return [
         'clear_laravel_cache' => env('FELO_HELPER_CLEAR_LARAVEL_CACHE', true),
         // Redis 连接名称，支持多个连接，逗号分隔或数组形式
         'redis_connections' => env('FELO_HELPER_REDIS_CONNECTIONS', 'default'),
-    ],
-    'api_response' => [
-        'enable_render_using' => env('FELO_HELPER_API_ENABLE_RENDER_USING', true),
-        'render_using' => ShouldReturnJsonRenderUsing::class,
-        'render_api_paths' => ['api/*'],
-        // 状态码策略：smart(业务码失败映射400) / legacy(业务码失败映射500)
-        'status_code_strategy' => env('FELO_HELPER_API_STATUS_CODE_STRATEGY', 'smart'),
-        // 生产环境默认隐藏 error 详情
-        'hide_error_when_not_debug' => env('FELO_HELPER_API_HIDE_ERROR', true),
-        'pipes' => [
-            MessagePipe::class,
-            ErrorPipe::class,
-            StatusCodePipe::class,
-        ],
-        'exception_pipes' => [
-            AuthenticationExceptionPipe::class,
-            HttpExceptionPipe::class,
-            ValidationExceptionPipe::class,
-        ],
     ],
     'sql_logger' => [
         'enabled' => env('FELO_HELPER_SQL_LOGGER_ENABLED', false),
@@ -79,17 +52,17 @@ return [
         ),
         'channels' => [
             'all' => [
-                'enabled' => env('FELO_HELPER_SQL_LOGGER_ALL_ENABLED', true),
-                'pattern' => env('FELO_HELPER_SQL_LOGGER_ALL_PATTERN', '/.+/s'),
-                'file_name' => env('FELO_HELPER_SQL_LOGGER_ALL_FILE_NAME', '{date:Y-m-d}-all.sql'),
-                'append' => env('FELO_HELPER_SQL_LOGGER_ALL_APPEND', true),
+                'enabled' => true,
+                'pattern' => '/.+/s',
+                'file_name' => '{date:Y-m-d}-all.sql',
+                'append' => true,
             ],
             'slow' => [
-                'enabled' => env('FELO_HELPER_SQL_LOGGER_SLOW_ENABLED', true),
-                'threshold_ms' => (float) env('FELO_HELPER_SQL_LOGGER_SLOW_THRESHOLD_MS', 100),
-                'pattern' => env('FELO_HELPER_SQL_LOGGER_SLOW_PATTERN', '/.+/s'),
-                'file_name' => env('FELO_HELPER_SQL_LOGGER_SLOW_FILE_NAME', '{date:Y-m-d}-slow.sql'),
-                'append' => env('FELO_HELPER_SQL_LOGGER_SLOW_APPEND', true),
+                'enabled' => true,
+                'threshold_ms' => 100,
+                'pattern' => '/.+/s',
+                'file_name' => '{date:Y-m-d}-slow.sql',
+                'append' => true,
             ],
         ],
     ],

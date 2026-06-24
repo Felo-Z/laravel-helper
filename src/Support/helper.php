@@ -1,7 +1,6 @@
 <?php
 
 use Carbon\Carbon;
-use FeloZ\LaravelHelper\Support\ApiResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
@@ -109,16 +108,6 @@ function clear_cache()
         $redis = Redis::connection($connection);
 
         $redis->flushDB();
-    }
-}
-
-if (! function_exists('ap')) {
-    /**
-     * 获取 API 响应构造器实例
-     */
-    function ap(): ApiResponse
-    {
-        return app(ApiResponse::class);
     }
 }
 
